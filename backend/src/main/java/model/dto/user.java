@@ -1,12 +1,12 @@
 package model.dto;
 
-public class user {
+public class User {
     private int id;
     private String login;
     private String passwordHash;
 
-    public user() {}
-    public user(int id, String login, String passwordHash) {
+    public User() {}
+    public User(int id, String login, String passwordHash) {
         this.id = id;
         this.login = login;
         this.passwordHash = passwordHash;

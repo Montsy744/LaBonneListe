@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.dao.UserDao;
 import model.dto.User;
 
-@WebServlet("/user")
-public class userController extends HttpServlet {
+@WebServlet("/login")
+public class loginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
@@ -25,14 +25,17 @@ public class userController extends HttpServlet {
                 : "application/json;charset=UTF-8";
         resp.setContentType(acceptType);
 
-        User user = new RequestReader<User>().readAsObject(req, User.class);
-        if (user == null) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        User credentials = new RequestReader<User>().readAsObject(req, User.class);
+        if (credentials == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "login and password required");
             return;
         }
 
         try {
-            Optional<User> userTypeOptional = UserDao.insertUser(user);
+            Optional<User> userTypeOptional = UserDao.getUserByLoginPassword(
+                credentials.getLogin(),
+                credentials.getPasswordHash()
+            );
             if (userTypeOptional.isEmpty()) {
                 resp.sendError(HttpServletResponse.SC_CONFLICT);
             } else {

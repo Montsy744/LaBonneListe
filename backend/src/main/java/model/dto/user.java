@@ -11,6 +11,9 @@ public class User {
         this.login = login;
         this.passwordHash = passwordHash;
     }
+    public User( String login, String passwordHash) {
+        this(-1, login, passwordHash);
+    }
 
     public int getId() {
         return id;

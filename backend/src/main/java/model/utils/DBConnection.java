@@ -3,7 +3,10 @@ package model.utils;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
+
+import error.NoConnection;
 
 public class DBConnection {
      private static String URL;
@@ -26,9 +29,15 @@ public class DBConnection {
         }
     }
 
-    public static Connection getConnection() throws Exception {
-        Class.forName("org.postgresql.Driver");
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    public static Connection getConnection() throws NoConnection {
+        try {
+            Class.forName("org.postgresql.Driver");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            throw new NoConnection("Connection not established");
+        } catch (ClassNotFoundException e) {
+            throw new NoConnection("Class not found");
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package model.dao;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,8 +37,19 @@ public class UserDao {
     }
 
     public static Optional<User> insertUser(User user) throws NoConnection, SQLException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insertUser'");
+        Connection con = DBConnection.getConnection();
+        String querry = """
+                INSERT INTO users(login, password_hash) VALUES (?,?);
+                """;
+        PreparedStatement pstmt = con.prepareStatement(querry, Statement.RETURN_GENERATED_KEYS);
+        pstmt.setString(1, user.getLogin());
+        pstmt.setString(2, user.getPasswordHash());
+
+        ResultSet rs = pstmt.getGeneratedKeys();
+        if(rs.next()){
+            user.setId(rs.getInt(1));
+        }
+        return Optional.of(user);
     }
     
 }

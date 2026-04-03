@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "../pages/Login";
-import Connection from "../pages/Connection";
+import Login from "../../pages/Login";
+import Connection from "../../pages/Connection";
 
 function AppRoutes() {
   return (

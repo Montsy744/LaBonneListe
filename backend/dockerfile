@@ -1,0 +1,15 @@
+FROM maven:3.9-eclipse-temurin-25-alpine AS build
+WORKDIR /labonneliste/backend
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src /labonneliste/backend/src
+RUN mvn clean package -DskipTests
+
+
+FROM eclipse-temurin:25-jre-alpine
+WORKDIR /labonneliste
+COPY --from=build /labonneliste/backend/target/*.jar /labonneliste/backend/app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/labonneliste/backend/app.jar"]

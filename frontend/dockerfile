@@ -1,0 +1,18 @@
+
+FROM node:25-alpine3.22 AS build
+WORKDIR /labonneliste/frontend
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+
+
+FROM node:22-alpine
+WORKDIR /labonneliste/frontend
+RUN npm install -g serve
+COPY --from=build /labonneliste/frontend/dist ./dist
+EXPOSE 5173
+CMD ["serve", "-s", "dist", "-l", "5173"]

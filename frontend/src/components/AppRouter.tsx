@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import Login from "../pages/Login";
+import Connexion from "../pages/Connexion";
 
 function AppRouter() {
-    return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Connexion />} />
+    </Routes>
+  );
 }
 
 export default AppRouter;
